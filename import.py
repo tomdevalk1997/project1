@@ -10,5 +10,6 @@ def main():
     csv_file = open("book.csv")
     reader = csv.reader(csv_file)
     for isbn, title, athor, year in reader:
-        db.execut(e("INSERT INTO books(isbn, title, author, year) VALUE(:isbn, :title, :author, :year)", {"isbn":isbn, "title":title, "author":author, "year":year})
+        db.execute("INSERT INTO books(isbn, title, author, year) VALUE(:isbn, :title, :author, :year)", {"isbn":isbn, "title":title, "author":author, "year":year})
+        print(f"Added book with ISBN: {isbn}, title: {title}, author: {author} and year: {year}")
     db.commit()

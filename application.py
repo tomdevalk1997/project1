@@ -23,6 +23,14 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/books")
+def books():
+    return render_template("books.html")
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
 @app.route("/books/<int:book_id>")
 def book(book_id):
     #Lists details about a book

@@ -5,7 +5,6 @@ from flask import render_template
 #from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-import csv
 
 app = Flask(__name__)
 
@@ -19,7 +18,6 @@ app = Flask(__name__)
 #db = scoped_session(sessionmaker(bind=engine))
 
 #exec('import.py')
-print("done")
 
 @app.route("/")
 def index():

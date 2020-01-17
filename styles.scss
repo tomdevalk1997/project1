@@ -1,6 +1,7 @@
 $color_primary: #4287f5;
 $color_secondary: lightgrey;
 $color_tertiary: #f7f7f7;
+$color_primary_hover: #425af5;
 
 header{
 	text-align: center;
@@ -103,15 +104,31 @@ th{
     border-radius: 8px;
 }
 
-.navigation_bar {
+.nav_bar {
 	background-color: $color_secondary;
   margin: 20px;
   padding: 20px;
   border-radius: 8px;
 }
 
+.nav_bar_button {
+	background-color: $color_tertiary;
+	border: none;
+	border-radius: 8px;
+	font-size: 20px;
+	margin: 20px;
+	padding: 20px;
+	width: 200px;
+	text-align: center;
+	color: $color_primary;
+}
+
+.nav_bar_button:hover {
+	background-color: $color_primary_hover;
+}
+
 .footer_bar {
-	@extend .navigation_bar;
+	@extend .nav_bar;
     color: $color_primary;
     text-align: center;
 }

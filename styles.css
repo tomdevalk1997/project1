@@ -96,11 +96,27 @@ th {
   border-radius: 8px;
 }
 
-.navigation_bar, .footer_bar {
+.nav_bar, .footer_bar {
   background-color: lightgrey;
   margin: 20px;
   padding: 20px;
   border-radius: 8px;
+}
+
+.nav_bar_button {
+  background-color: #f7f7f7;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  margin: 20px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  color: #4287f5;
+}
+
+.nav_bar_button:hover {
+  background-color: #425af5;
 }
 
 .footer_bar {

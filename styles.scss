@@ -6,102 +6,22 @@ $color_primary_hover: #425af5;
 header{
 	text-align: center;
 	margin: 30px;
-	h1{
-		font-weight: bold;
-	}
+}
+
+h1{
+	font-weight: bold;
 }
 
 h3, header{
 	color: $color_primary;
 }
 
-table {
-	width: 100%;
-}
-
-tr, td{
-	text-align: center;
-	border: solid 1px;
-	border-collapse: collapse;
-}
-
-tr {
-	border: solid 2px;
-	padding: 5px;
-}
-
-th{
-	color: $color_primary;
-}
-
-@media screen and (min-width: 500px){
-	#aanwijzingen_tabel {
-		visibilty:normal;
-	}
-}
-
-@media screen and (max-width: 499px){
-	#aanwijzingen_tabel {
-		visibility:hidden;
-	}
-}
-
-#foto_start {
-	border-radius: 8px;
-	border: solid;
-	width: 100%;
-}
-
-.foto {
-	border-radius: 8px;
-	border: solid;
-	width: 100%;
-}
-
-.foto_aanwijzing {
-	border-radius: 8px;
-	border: solid;
-	width: 25%;
-}
-
-.aanwijzing_box {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.aanwijzing_button {
- 	background-color: $color_tertiary;
- 	border: none;
- 	border-radius: 8px;
-    font-size: 20px;
-    margin: 20px;
-    padding: 20px;
-    width: 200px;
-    text-align: center;
-    color: $color_primary;
-}
-
-.aanwijzing_button:hover{
-	background-color: $color_primary;
-	color: white;
-}
-
-.volgende_aanwijzing {
-	@extend .aanwijzing_button;
-    width: 500px;
-}
-
-.volgende_aanwijzing:hover{
-	background-color: $color_primary;
-	color: white;
-}
-
 .pagina {
 	background-color: $color_tertiary;
-    font-size: 18px;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 8px;
+  font-size: 18px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .nav_bar {

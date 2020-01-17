@@ -2,90 +2,13 @@ header {
   text-align: center;
   margin: 30px;
 }
-header h1 {
+
+h1 {
   font-weight: bold;
 }
 
 h3, header {
   color: #4287f5;
-}
-
-table {
-  width: 100%;
-}
-
-tr, td {
-  text-align: center;
-  border: solid 1px;
-  border-collapse: collapse;
-}
-
-tr {
-  border: solid 2px;
-  padding: 5px;
-}
-
-th {
-  color: #4287f5;
-}
-
-@media screen and (min-width: 500px) {
-  #aanwijzingen_tabel {
-    visibilty: normal;
-  }
-}
-@media screen and (max-width: 499px) {
-  #aanwijzingen_tabel {
-    visibility: hidden;
-  }
-}
-#foto_start {
-  border-radius: 8px;
-  border: solid;
-  width: 100%;
-}
-
-.foto {
-  border-radius: 8px;
-  border: solid;
-  width: 100%;
-}
-
-.foto_aanwijzing {
-  border-radius: 8px;
-  border: solid;
-  width: 25%;
-}
-
-.aanwijzing_box {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.aanwijzing_button, .volgende_aanwijzing {
-  background-color: #f7f7f7;
-  border: none;
-  border-radius: 8px;
-  font-size: 20px;
-  margin: 20px;
-  padding: 20px;
-  width: 200px;
-  text-align: center;
-  color: #4287f5;
-}
-
-.aanwijzing_button:hover, .volgende_aanwijzing:hover {
-  background-color: #4287f5;
-  color: white;
-}
-
-.volgende_aanwijzing {
-  width: 500px;
-}
-
-.volgende_aanwijzing:hover {
-  background-color: #4287f5;
-  color: white;
 }
 
 .pagina {

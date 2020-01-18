@@ -1,0 +1,27 @@
+$color_primary: #191927;
+$color_primary_hover: #36364d;
+$color_secondary: #f7f7f7;
+
+#main-column {
+	background-color: $color_secondary;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+#side-column {
+	background-color: $color_secondary;
+	border-radius: 8px;
+	margin: 30px;
+	padding: 20px;
+}
+
+.button-additional {
+	background-color: $color_primary;
+	border:$color_primary;
+}
+
+.button-additonal:hover {
+	background-color: $color_primary_hover;
+	border: $color_primary_hover;
+}

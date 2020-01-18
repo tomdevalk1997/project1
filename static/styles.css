@@ -1,0 +1,25 @@
+#main-column {
+  background-color: #f7f7f7;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+#side-column {
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  margin: 30px;
+  padding: 20px;
+}
+
+.button-additional {
+  background-color: #191927;
+  border: #191927;
+}
+
+.button-additonal:hover {
+  background-color: #36364d;
+  border: #36364d;
+}
+
+/*# sourceMappingURL=styles.css.map */

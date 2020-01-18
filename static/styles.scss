@@ -9,7 +9,7 @@ $color_secondary: #f7f7f7;
   border-radius: 8px;
 }
 
-#side-column {
+.side-column {
 	background-color: $color_secondary;
 	border-radius: 8px;
 	margin: 30px;
@@ -21,7 +21,7 @@ $color_secondary: #f7f7f7;
 	border:$color_primary;
 }
 
-.button-additonal:hover {
+.button-additional:hover {
 	background-color: $color_primary_hover;
 	border: $color_primary_hover;
 }

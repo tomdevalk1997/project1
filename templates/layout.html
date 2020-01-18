@@ -7,7 +7,7 @@
     </head>
     <body>
       <nav class="navbar navbar-dark" style="background-color: #191927">
-        <a class="navbar-brand"><img src="logo.png">Bill Gates' Library</a>
+        <a class="navbar-brand"><!--<img src="logo.png">-->Bill Gates' Library</a>
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             {% block navbar %}
             {% endblock %}
@@ -19,13 +19,16 @@
       </nav>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-8" style="background-color: #f7f7f7; border-radius: 8px; margin: 30px; padding: 20px;">
-            {% block heading %} {% endblock %}
-            {% block main_body %}
-            {% endblock %}
+          <div class="col-sm-8"
+            <div id="main_column">
+              {% block heading %}
+              {% endblock %}
+              {% block main_body %}
+              {% endblock %}
+            </div>
           </div>
           <div class="col-sm-3">
-            <form class="form-horizontal" style="background-color: #f7f7f7; border-radius: 8px; margin: 30px; padding: 20px;">
+            <form class="form-horizontal side_column">
               <div class="form-group">
                 <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-10">
@@ -45,7 +48,7 @@
                 </div>
               </div>
             </form>
-            <div id="side_column">
+            <div class="side_column">
               {% block side_body %}
               {% endblock %}
             </div>

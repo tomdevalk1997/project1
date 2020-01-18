@@ -24,10 +24,19 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
       </nav>
-  		<div class="pagina">
-  			<h3>{% block heading %} {% endblock %}</h3>
-        {% block body %}
-        {% endblock %}
-  		</div>
+      <div class="container">
+        <div class="row">
+          <div class="pagina">
+            <div class="col-sm">
+              <h3>{% block heading %} {% endblock %}</h3>
+              {% block body %}
+              {% endblock %}
+            </div>
+            <div class="col-sm">
+                Toen was de speurtocht ineens klaar en had ik weinig meer te schrijven in deze twee super coole kolommen.
+            </div>
+          </div>
+        </div>
+      </div>
     </body>
 </html>

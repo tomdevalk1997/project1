@@ -11,9 +11,15 @@ h3, header {
   color: #4287f5;
 }
 
-.pagina {
+#main-column {
   background-color: #f7f7f7;
-  font-size: 18px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+#side-column {
+  background-color: #f7f7f7;
   margin: 20px;
   padding: 20px;
   border-radius: 8px;

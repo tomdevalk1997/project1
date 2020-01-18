@@ -16,7 +16,14 @@ h3, header{
 	color: $color_primary;
 }
 
-.pagina {
+#main-column {
+	background-color: $color_tertiary;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+#side-column {
 	background-color: $color_tertiary;
   margin: 20px;
   padding: 20px;

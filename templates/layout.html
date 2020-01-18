@@ -26,18 +26,14 @@
       </nav>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-9">
-            <div class="pagina">
-              {% block heading %} {% endblock %}
-              {% block main_body %}
-              {% endblock %}
-            </div>
+          <div class="col-sm-9" id="main-column">
+            {% block heading %} {% endblock %}
+            {% block main_body %}
+            {% endblock %}
           </div>
-          <div class="col-sm-3">
-            <div class="pagina">
-              {% block side_column %}
-              {% endblock %}
-            </div>
+          <div class="col-sm-3" id="side-column">
+            {% block side_column %}
+            {% endblock %}
           </div>
         </div>
       </div>

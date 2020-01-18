@@ -7,17 +7,10 @@
     </head>
     <body>
       <nav class="navbar navbar-dark bg-primary">
-        <a class="navbar-brand"><img alt="Brand" src="logo.png"></a>
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="books.html">Books</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
-            </li>
+        <a class="navbar-brand"><img src="logo.png">Bill Gates' Library</a>
+          <ul class="navbar-nav  mr-auto mt-2 mt-lg-0">
+            {% block navbar %}
+            {% endblock %}
           </ul>
           <form class="form-inline my-2 my-lg-0 search_navbar">
             <input class="form-control mr-sm-2" type="search" placeholder="Search">

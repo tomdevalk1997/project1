@@ -26,12 +26,13 @@
       </nav>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-9" style="background-color: #f7f7f7; border-radius: 8px; margin: 20px; padding: 20px;">
+          <div class="col-sm-8" style="background-color: #f7f7f7; border-radius: 8px; margin: 30px; padding: 20px;">
             {% block heading %} {% endblock %}
             {% block main_body %}
             {% endblock %}
           </div>
-          <div class="col-sm-3" style="background-color: #f7f7f7; border-radius: 8px; margin: 20px; padding: 20px;">
+          <div class="col-sm-3" style="background-color: #f7f7f7; border-radius: 8px; margin: 30px; padding: 20px;">
+            <h5>Login</h5>
             <form class="form-horizontal">
               <div class="form-group">
                 <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
@@ -48,6 +49,32 @@
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>
+              </div>
+            </form>
+            <h5>Register</h5>
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label">Confirm Password</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-primary">Register</button>
                 </div>
               </div>
             </form>

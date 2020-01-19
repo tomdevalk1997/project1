@@ -1,6 +1,8 @@
 #main-column {
   background-color: #f7f7f7;
-  margin: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
 }
@@ -8,18 +10,41 @@
 .side-column {
   background-color: #f7f7f7;
   border-radius: 8px;
-  margin: 30px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 20px;
 }
 
-.button-additional {
+.side-column-list {
+  color: #191927;
+}
+
+.btn {
   background-color: #191927;
   border: #191927;
 }
 
-.button-additional:hover {
-  background-color: #36364d;
-  border: #36364d;
+.btn:hover {
+  background-color: #616180;
+  border: #616180;
+}
+
+.navbar {
+  background-color: #191927;
+}
+
+.navbar-nav {
+  flex-direction: row;
+}
+
+.nav-item {
+  margin-left: 40px;
+}
+
+.footer {
+  height: 100px;
+  background-color: #191927;
 }
 
 /*# sourceMappingURL=styles.css.map */

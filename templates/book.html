@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block navbar %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{{ url_for('books') }}">Books</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+  </li>
+{% endblock %}
+{% block heading %}
+  <h3>{{ book.title }}</h3>
+{% endblock %}
+{% block main_body %}
+  <ul>
+    <li class="side-column-list">Author: {{ book.author }}</li>
+    <li class="side-column-list">Year: {{ book.year }}</li>
+    <li class="side-column-list">ISBN: {{ book.isbn }}</li>
+  </ul>
+  <ul>
+    <li class="side-column-list">Average rating: {{ book.average_rating }}</li>
+    <li class="side-column-list">Number of ratings: {{ book.number_ratings }}</li>
+  </ul>
+{% endblock %}
+{% for every review %}
+  <div class="side-column">
+    <h5>Title: {{ review.title }}</h5>
+    <br>
+    <p>Review: {{ review.message }}</p>
+  </div>
+{% endfor %}
+<div class="side-column">
+  <!--Form om review te schrijven-->
+  <form class="form-horizontal method="post">
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-12 control-label">Title</label>
+      <div class="col-sm-12">
+        <input type="title" class="form-control" id="inputEmail3" placeholder="Review Title">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-12 control-label">Review</label>
+      <div class="col-sm-12">
+        <input type="review" class="form-control" id="inputEmail3" placeholder="Review">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% block side_body %}
+  <h5>Top 20 Rated Books</h5>
+  <ol>
+    {% for i in range(20) %}
+      <li><a href="{{ url_for('books') }}" class="side-column-list">Book {{ i + 1 }}</a></li>
+    {% endfor %}
+  </ol>
+{% endblock %}

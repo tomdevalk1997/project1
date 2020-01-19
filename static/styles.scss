@@ -1,10 +1,12 @@
 $color_primary: #191927;
-$color_primary_hover: #36364d;
+$color_primary_hover: #616180;
 $color_secondary: #f7f7f7;
 
 #main-column {
 	background-color: $color_secondary;
-  margin: 20px;
+  margin-left: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
 }
@@ -12,16 +14,39 @@ $color_secondary: #f7f7f7;
 .side-column {
 	background-color: $color_secondary;
 	border-radius: 8px;
-	margin: 30px;
+	margin-left: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 	padding: 20px;
 }
 
-.button-additional {
+.side-column-list {
+	color: $color_primary
+}
+
+.btn {
 	background-color: $color_primary;
 	border:$color_primary;
 }
 
-.button-additional:hover {
+.btn:hover {
 	background-color: $color_primary_hover;
 	border: $color_primary_hover;
+}
+
+.navbar{
+	background-color: $color_primary;
+}
+
+.navbar-nav {
+  flex-direction: row;
+}
+
+.nav-item {
+	margin-left: 40px;
+}
+
+.footer {
+	height: 100px;
+	background-color: $color_primary;
 }

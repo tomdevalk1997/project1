@@ -22,17 +22,15 @@
   </p>
 {% endblock %}
 {% block side_body %}
-  <h5>Top 10 Rated Books<h5>
+  <h5>Top 10 Rated Books</h5>
   <ol>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 1</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 2</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 3</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 4</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 5</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 6</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 7</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 8</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 9</a></li>
-    <li><a href="{{ url_for('books') }}" style="color: #191927">Book 10</a></li>
+    {% for i in range(10) %}
+      <li><a href="{{ url_for('books') }}" class="side-column-list">Book {{ i + 1 }}</a></li>
+    {% endfor %}
   </ol>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary" onclick="location.href = '{{ url_for('books') }}';">See all books</button>
+    </div>
+  </div>
 {% endblock %}

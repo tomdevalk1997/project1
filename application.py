@@ -32,15 +32,10 @@ def contact():
     return render_template("contact.html")
 
 @app.route("/books/<int:book_id>")
-def book(book_id):
-    #Lists details about a book
-
+def book(isbn):
     # Make sure book exists
-    book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
-    if flight is None:
-        return render_template("error.html", message="No such flight.")
+    book = db.execute("SELECT * FROM books WHERE book_id = :book_id", {"id": book_id}).fetchone()
+    if book is None:
+        return render_template("error.html", message="No such book.")
 
-    # Get all reviews
-    #reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": book_id}).fetchall()
-    #return render_template("book.html", book=book, reviews=reviews)
     return render_template("book.html", book=book)

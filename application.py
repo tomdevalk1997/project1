@@ -27,15 +27,29 @@ def index():
 def books():
     return render_template("books.html")
 
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
 
 @app.route("/books/<int:book_id>")
-def book(isbn):
-    # Make sure book exists
+def book(book_id):
     book = db.execute("SELECT * FROM books WHERE book_id = :book_id", {"id": book_id}).fetchone()
     if book is None:
-        return render_template("error.html", message="No such book.")
-
+        return render_template("books.html", message="Unknown book_id")
     return render_template("book.html", book=book)
+
+@app.route("/api/books/<int:book_id>")
+def book_api(book_id):
+    book = db.execute("SELECT * FROM books WHERE id = :book_id").fetchone()
+    if book is None:
+        return jsonify({"error": "unknown book_id"}), 404
+    return jsonify({
+        "isbn": book.isbn,
+        "title": book.title,
+        "author": book.author,
+        "year": book.year
+    })

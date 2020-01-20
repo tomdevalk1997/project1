@@ -20,8 +20,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-8" id="main-column">
-            {% block heading %}
-            {% endblock %}
+            <h3>{% block heading %}{% endblock %}</h3>
             {% block main_body %}
             {% endblock %}
           </div>
@@ -42,7 +41,7 @@
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="submit" class="btn btn-primary">Sign in</button>
-                  <button type="submit" class="btn btn-primary">Register</button>
+                  <button type="submit" class="btn btn-primary" onclick="location.href = '{{ url_for('register') }}';">Register</button>
                 </div>
               </div>
             </form>

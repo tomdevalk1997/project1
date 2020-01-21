@@ -6,9 +6,6 @@
   <li class="nav-item active">
     <a class="nav-link" href="{{ url_for('books') }}">Books</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
-  </li>
 {% endblock %}
 {% block heading %}
   Books
@@ -24,7 +21,7 @@
 {% block side_body %}
   <h5>Top 20 Rated Books</h5>
   <ol>
-    {% for i in range(20) %}
+    {% for i in range(10) %}
       <li><a href="{{ url_for('books') }}" class="side-column-list">Book {{ i + 1 }}</a></li>
     {% endfor %}
   </ol>

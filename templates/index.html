@@ -6,9 +6,6 @@
   <li class="nav-item">
     <a class="nav-link" href="{{ url_for('books') }}">Books</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
-  </li>
 {% endblock %}
 {% block heading %}
   Welcome to Bill Gates' Library
@@ -28,9 +25,4 @@
       <li><a href="{{ url_for('books') }}" class="side-column-list">Book {{ i + 1 }}</a></li>
     {% endfor %}
   </ol>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary" onclick="location.href = '{{ url_for('books') }}';">See all books</button>
-    </div>
-  </div>
 {% endblock %}

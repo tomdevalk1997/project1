@@ -7,6 +7,14 @@
   border-radius: 8px;
 }
 
+.place-review-form {
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
 .side-column {
   background-color: #f7f7f7;
   border-radius: 8px;
@@ -45,6 +53,11 @@
 .footer {
   height: 100px;
   background-color: #191927;
+}
+
+table {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /*# sourceMappingURL=styles.css.map */

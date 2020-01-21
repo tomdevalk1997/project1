@@ -2,45 +2,102 @@ import os
 
 from flask import Flask, session
 from flask import render_template
-#from flask_session import Session
+from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from flask import request
+import requests
+import json
 
 app = Flask(__name__)
 
-# Configure session to use filesystem
-#app.config["SESSION_PERMANENT"] = False
-#app.config["SESSION_TYPE"] = "filesystem"
-#Session(app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
-# Set up database
-#engine = create_engine(os.getenv("postgres://iutmwfhcnvzjeh:723a5f85dd12d10d4f2c44a58f7781d856595212cca2d1573a176598f4cec44d@ec2-79-125-2-142.eu-west-1.compute.amazonaws.com:5432/dej617ep6sqm62"))
-#db = scoped_session(sessionmaker(bind=engine))
-
-#exec('import.py')
+engine = create_engine(os.getenv("DATABASE_URL"))
+db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/books")
+@app.route("/books", methods=["GET", "POST"])
 def books():
-    return render_template("books.html")
+    if request.method == "GET":
+        return render_template("books.html", results_count=0)
+    else:
+        search_results = db.execute("SELECT * FROM books WHERE title like '%input%' or author like '%input%' or isbn like '%input%'").fetchall()
+        if search_results is None:
+            results = "No books found"
+            return render_template("books.html", results_count=0)
+        results_count = search_results.length()
+        return render_template("books.html", search_results=search_results, results_count=results_count)
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "GET":
+        return render_template("register.html")
+    else:
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        password_confirmation = request.form.get("password_confirmation")
+        print(name)
+        print(email)
+        print(password)
+        print(password_confirmation)
+
+        if if db.execute("SELECT * FROM users WHERE email=:email", {"email": email}).rowcount > 0:
+            if password == password_confirmation:
+                db.execute("INSERT INTO users(name, email, password) VALUES(:name, :email, :password)",
+                    {"name": name, "email": email, "password": password})
+                db.commit()
+                return render_template("index.html")
+            else:
+                pass
+                # passwords don't match
+        else:
+            pass
+            # email already exists with other user
 
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
 
-@app.route("/books/<int:book_id>")
+@app.route("/")
+def search(input):
+    search_results = db.execute("SELECT * FROM books WHERE title like '%input%' or author like '%input%' or isbn like '%input%'").fetchall()
+    if search_results is None:
+        results = "No books found"
+        return render_template("books.html", results_count=0)
+    results_count = search_results.length()
+    return render_template("books.html", search_results=search_results, results_count=results_count)
+
+@app.route("/books/<int:book_id>", methods=["GET", "POST"])
 def book(book_id):
-    book = db.execute("SELECT * FROM books WHERE book_id = :book_id", {"id": book_id}).fetchone()
-    if book is None:
-        return render_template("books.html", message="Unknown book_id")
-    return render_template("book.html", book=book)
+    if request.method == "POST":
+        review_title = request.form.get(review_title)
+        review = request.form.get(review)
+        print(review_title)
+        print(review)
+        date = date.today()
+        db.execute("INSERT INTO reviews(book_id, title, message, year) VALUES(:book_id, :title, :message, :date, :user_id)",
+        {"book_id": book_id, "title": review_title, "message": review, "date": date, "user_id": user_id})
+        db.commit()
+    else:
+        book = db.execute("SELECT * FROM books WHERE id = :book_id", {"book_id": book_id}).fetchone()
+        if book is None:
+            return render_template("books.html", message="not found")
+
+        response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "L4JJxvbz5DQuqwHGe9grw", "isbns": book.isbn})
+        response_data = response.json()
+        reviews_count = response_data["books"][0]["reviews_count"]
+        average_rating = response_data["books"][0]["average_rating"]
+        #db.execute("UDATE books(SET average_rating=:average_rating, reviews_count=:reviews_count WHERE id=:book_id), {"book_id": book_id, "average_rating": average_rating, "reviews_count": reviews_count}")
+        #db.commit()
+        reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": book.id}).fetchall()
+        return render_template("book.html", book=book, reviews_count=reviews_count, average_rating=average_rating, reviews=reviews)
 
 @app.route("/api/books/<int:book_id>")
 def book_api(book_id):

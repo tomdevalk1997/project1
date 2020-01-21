@@ -11,6 +11,14 @@ $color_secondary: #f7f7f7;
   border-radius: 8px;
 }
 
+.place-review-form {
+	background-color: white;
+	margin-top: 20px;
+	margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
 .side-column {
 	background-color: $color_secondary;
 	border-radius: 8px;
@@ -49,4 +57,9 @@ $color_secondary: #f7f7f7;
 .footer {
 	height: 100px;
 	background-color: $color_primary;
+}
+
+table {
+	margin-top: 20px;
+	margin-bottom: 20px;
 }

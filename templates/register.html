@@ -6,12 +6,15 @@
   <li class="nav-item">
     <a class="nav-link" href="{{ url_for('books') }}">Books</a>
   </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+  </li>
 {% endblock %}
 {% block heading %}
   Welcome to Bill Gates' Library
 {% endblock %}
 {% block main_body %}
-  <form class="form-horizontal side-column">
+  <form class="form-horizontal side-column" action="{{ url_for('register') }}" method="post">
     <div class="form-group">
       <label for="inputEmail3" class="col-sm-12 control-label">Name</label>
       <div class="col-sm-12">
@@ -38,7 +41,7 @@
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-12">
-        <button type="submit" class="btn btn-primary" onclick="location.href = '{{ url_for('index') }}';">Register</button>
+        <button type="submit" class="btn btn-primary">Register</button>
       </div>
     </div>
   </form>

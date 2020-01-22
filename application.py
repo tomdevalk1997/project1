@@ -19,22 +19,22 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-logged_in = False
-
 @app.route("/")
 def index():
-    return render_template("index.html", logged_in=logged_in, alert_message="")
+    if session.get("logged_in") is None:
+        session["logged_in"] = False
+    return render_template("index.html", logged_in=session["logged_in"], alert_message="")
 
 @app.route("/books", methods=["GET", "POST"])
 def books():
     if request.method == "GET":
-        return render_template("books.html", results_count=0, logged_in=logged_in)
+        return render_template("books.html", results_count=0, logged_in=session["logged_in"])
     else:
         search_results = db.execute("SELECT * FROM books WHERE title like '%input%' or author like '%input%' or isbn like '%input%'").fetchall()
         if search_results is None:
             print("No books found")
-            return render_template("books.html", results_count=0, logged_in=logged_in)
-        return render_template("books.html", search_results=search_results, results_count=1, logged_in=logged_in)
+            return render_template("books.html", results_count=0, logged_in=session["logged_in"])
+        return render_template("books.html", search_results=search_results, results_count=1, logged_in=session["logged_in"])
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -46,32 +46,38 @@ def register():
         password = request.form.get("password")
         password_confirmation = request.form.get("password_confirmation")
 
-        if db.execute("SELECT * FROM users WHERE email=:email", {"email": email}).rowcount > 0:
+        if db.execute("SELECT * FROM users WHERE email=:email", {"email": email}).rowcount == 0:
             if password == password_confirmation:
                 db.execute("INSERT INTO users(name, email, password) VALUES(:name, :email, :password)",
                     {"name": name, "email": email, "password": password})
                 db.commit()
-                print("Registration succesful")
-                return render_template("index.html", logged_in=logged_in)
+                alert_message = "Registration succesful"
+                return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message)
             else:
-                print("Passwords need to be the same to register.")
+                alert_message = "Passwords need to be the same to register."
+                return render_template("register.html", logged_in=session["logged_in"], alert_message=alert_message)
         else:
-            print("Email address is already present in the database. Log in or register a different email address.")
+            alert_message = "Email address is already present in the database. Log in or register a different email address."
+            return render_template("register.html", logged_in=session["logged_in"], alert_message=alert_message)
 
 @app.route("/login", methods=["POST"])
 def login():
     email = request.form.get("email")
     password = request.form.get("password")
-    if db.execute("SELECT * FROM users WHERE email=:email and password=:password" , {"email": email, "password": password}).rowcount == 1:
+    query_user = db.execute("SELECT * FROM users WHERE email=:email and password=:password" , {"email": email, "password": password})
+    if query_user.rowcount == 1:
         alert_message = "Login succesful"
+        #session["user_id"] = query_user.user_id
+        session["logged_in"] = True
     else:
         alert_message = "Login failed"
-    return render_template("index.html", logged_in=logged_in, alert_message=alert_message)
+    return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message)
 
-@app.route("/logout")
+@app.route("/logout") #werkt nog niet
 def logout():
-    logged_in = False
-    return redirect(url_for("index.html", logged_in=logged_in))
+    alert_message = "Logout succesful"
+    session["logged_in"] = False
+    return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message)
 
 @app.route("/search", methods=["POST"])
 def search():
@@ -84,7 +90,7 @@ def search():
             results_message = f"No books found for: {search_input}"
         else:
             results_message = f"Showing {results_count} search results for: {search_input}"
-        return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=logged_in, results_message=results_message)
+        return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=session["logged_in"], results_message=results_message)
 
 @app.route("/books/<int:book_id>", methods=["GET", "POST"])
 def book(book_id):
@@ -100,7 +106,7 @@ def book(book_id):
     else:
         book = db.execute("SELECT * FROM books WHERE id = :book_id", {"book_id": book_id}).fetchone()
         if book is None:
-            return render_template("books.html", logged_in=logged_in)
+            return render_template("books.html", logged_in=session["logged_in"])
 
         response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "L4JJxvbz5DQuqwHGe9grw", "isbns": book.isbn})
         response_data = response.json()
@@ -109,7 +115,7 @@ def book(book_id):
         #db.execute("UDATE books(SET average_rating=:average_rating, reviews_count=:reviews_count WHERE id=:book_id), {"book_id": book_id, "average_rating": average_rating, "reviews_count": reviews_count}")
         #db.commit()
         reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": book.id}).fetchall()
-        return render_template("book.html", book=book, reviews_count=reviews_count, average_rating=average_rating, reviews=reviews, logged_in=logged_in)
+        return render_template("book.html", book=book, reviews_count=reviews_count, average_rating=average_rating, reviews=reviews, logged_in=session["logged_in"])
 
 @app.route("/api/books/<int:book_id>")
 def book_api(book_id):

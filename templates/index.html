@@ -6,18 +6,9 @@
   <li class="nav-item">
     <a class="nav-link" href="{{ url_for('books') }}">Books</a>
   </li>
-{% endblock %}
-{% block alertspace %}
-  {% if alert_message == 'Login succesful' %}
-  <div class="alert alert-success" role="alert">
-    {{ alert_message }}
-  </div>
-  {% endif %}
-  {% if alert_message == 'Login failed' %}
-    <div class="alert alert-danger" role="alert">
-      {{ alert_message }}
-    </div>
-  {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+  </li>
 {% endblock %}
 {% block heading %}
   Welcome to Bill Gates' Library

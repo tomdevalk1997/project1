@@ -31,11 +31,13 @@
 .btn {
   background-color: #191927;
   border: #191927;
+  color: white;
 }
 
 .btn:hover {
   background-color: #616180;
   border: #616180;
+  color: white;
 }
 
 .navbar {

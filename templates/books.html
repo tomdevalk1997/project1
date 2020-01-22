@@ -7,23 +7,43 @@
     <a class="nav-link" href="{{ url_for('books') }}">Books</a>
   </li>
 {% endblock %}
+{% block alertspace %}
+  {% if alert_message == 'Login succesful' %}
+  <div class="alert alert-success" role="alert">
+    {{ alert_message }}
+  </div>
+  {% endif %}
+  {% if alert_message == 'Login failed' %}
+    <div class="alert alert-danger" role="alert">
+      {{ alert_message }}
+    </div>
+  {% endif %}
+{% endblock %}
 {% block heading %}
   Books
 {% endblock %}
 {% block main_body %}
+  <p>{{ results_message }}</p>
   {% if results_count == 0 %}
     <p>Welcome to the books page of Bill Gates' Library. From here, you can search for ISBN numbers, authors and titles for the books that you are looking for. Use the input field below to do this.</p>
-    <form class="form-inline my-2 my-lg-0">
+    <!--<form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post">
       <input class="form-control mr-sm-2" type="search" placeholder="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+      <button class="btn btn-primary" onclick="location.href = '{{ url_for('search') }}';" type="submit">Search</button>
+    </form>-->
   {% else %}
     {% for result in search_results %}
       <div class="place-review-form">
         <h5>{{ result.title }}</h5>
-        <p>ISBN: {{ result.isbn }}</p>
-        <p>Author: {{ result.author }}</p>
-        <p>Year: {{ result.year }}</p>
+        <p>
+          ISBN: {{ result.isbn }}
+          <br>
+          Author: {{ result.author }}
+          <br>
+          Year: {{ result.year }}
+        </p>
+        <form class="form-inline">
+          <button class="btn btn-primary" onclick="location.href = '{{ url_for('book', book_id=result.id) }}';" type="submit">View book</button>
+        </form>
       </div>
     {% endfor %}
   {% endif %}

@@ -1,7 +1,8 @@
 import os
-
 from flask import Flask, session
+from flask import url_for
 from flask import render_template
+from flask import redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -18,25 +19,22 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+logged_in = False
+
 @app.route("/")
 def index():
-    logged_in = False
-    return render_template("index.html", logged_in=logged_in)
+    return render_template("index.html", logged_in=logged_in, alert_message="")
 
 @app.route("/books", methods=["GET", "POST"])
 def books():
     if request.method == "GET":
-        logged_in = False
         return render_template("books.html", results_count=0, logged_in=logged_in)
     else:
         search_results = db.execute("SELECT * FROM books WHERE title like '%input%' or author like '%input%' or isbn like '%input%'").fetchall()
         if search_results is None:
-            results = "No books found"
-            logged_in = False
+            print("No books found")
             return render_template("books.html", results_count=0, logged_in=logged_in)
-        results_count = search_results.length()
-        logged_in = False
-        return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=logged_in)
+        return render_template("books.html", search_results=search_results, results_count=1, logged_in=logged_in)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -53,31 +51,46 @@ def register():
                 db.execute("INSERT INTO users(name, email, password) VALUES(:name, :email, :password)",
                     {"name": name, "email": email, "password": password})
                 db.commit()
-                logged_in = False
+                print("Registration succesful")
                 return render_template("index.html", logged_in=logged_in)
             else:
-                pass
-                # passwords don't match
+                print("Passwords need to be the same to register.")
         else:
-            pass
-            # email already exists with other user
+            print("Email address is already present in the database. Log in or register a different email address.")
 
-@app.route("/")
-def search(input):
-    search_results = db.execute("SELECT * FROM books WHERE title like '%input%' or author like '%input%' or isbn like '%input%'").fetchall()
-    if search_results is None:
-        results = "No books found"
-        logged_in = False
-        return render_template("books.html", results_count=0, logged_in=logged_in)
-    results_count = search_results.length()
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    if db.execute("SELECT * FROM users WHERE email=:email and password=:password" , {"email": email, "password": password}).rowcount == 1:
+        alert_message = "Login succesful"
+    else:
+        alert_message = "Login failed"
+    return render_template("index.html", logged_in=logged_in, alert_message=alert_message)
+
+@app.route("/logout")
+def logout():
     logged_in = False
-    return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=logged_in)
+    return redirect(url_for("index.html", logged_in=logged_in))
+
+@app.route("/search", methods=["POST"])
+def search():
+    search_input = request.form.get("search_input")
+    print(f"Searching for: {search_input}")
+    if search_input is not None:
+        search_results = db.execute("SELECT * FROM books WHERE UPPER(title) like :title or UPPER(author) like :author or UPPER(isbn) like :isbn", {"title": f"%{search_input.upper()}%", "author": f"%{search_input.upper()}%", "isbn": f"%{search_input.upper()}%"}).fetchall()
+        results_count = len(search_results)
+        if search_results == []:
+            results_message = f"No books found for: {search_input}"
+        else:
+            results_message = f"Showing {results_count} search results for: {search_input}"
+        return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=logged_in, results_message=results_message)
 
 @app.route("/books/<int:book_id>", methods=["GET", "POST"])
 def book(book_id):
     if request.method == "POST":
-        review_title = request.form.get(review_title)
-        review = request.form.get(review)
+        review_title = request.form.get("review_title")
+        review = request.form.get("review")
         print(review_title)
         print(review)
         date = date.today()
@@ -87,8 +100,7 @@ def book(book_id):
     else:
         book = db.execute("SELECT * FROM books WHERE id = :book_id", {"book_id": book_id}).fetchone()
         if book is None:
-            logged_in = False
-            return render_template("books.html", message="not found", logged_in=logged_in)
+            return render_template("books.html", logged_in=logged_in)
 
         response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "L4JJxvbz5DQuqwHGe9grw", "isbns": book.isbn})
         response_data = response.json()
@@ -97,7 +109,6 @@ def book(book_id):
         #db.execute("UDATE books(SET average_rating=:average_rating, reviews_count=:reviews_count WHERE id=:book_id), {"book_id": book_id, "average_rating": average_rating, "reviews_count": reviews_count}")
         #db.commit()
         reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": book.id}).fetchall()
-        logged_in = False
         return render_template("book.html", book=book, reviews_count=reviews_count, average_rating=average_rating, reviews=reviews, logged_in=logged_in)
 
 @app.route("/api/books/<int:book_id>")

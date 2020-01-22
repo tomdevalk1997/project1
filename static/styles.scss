@@ -34,12 +34,14 @@ $color_secondary: #f7f7f7;
 
 .btn {
 	background-color: $color_primary;
-	border:$color_primary;
+	border: $color_primary;
+	color: white;
 }
 
 .btn:hover {
 	background-color: $color_primary_hover;
 	border: $color_primary_hover;
+	color: white;
 }
 
 .navbar{

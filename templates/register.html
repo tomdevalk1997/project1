@@ -11,9 +11,10 @@
   </li>
 {% endblock %}
 {% block heading %}
-  Welcome to Bill Gates' Library
+  Register
 {% endblock %}
 {% block main_body %}
+  <p>Welcome to the registration page of this website. Here you can create an account that will enable you to search for books as well as read and write ratings and reviews about books. Please fill out the form below to complete your registration.</p> 
   <form class="form-horizontal side-column" action="{{ url_for('register') }}" method="post">
     <div class="form-group">
       <label for="inputEmail3" class="col-sm-12 control-label">Name</label>
@@ -45,7 +46,4 @@
       </div>
     </div>
   </form>
-{% endblock %}
-{% block side_body %}
-  <p>Once you have registered, you will be redirected to the homepage to log in.</p>
 {% endblock %}

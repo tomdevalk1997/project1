@@ -22,12 +22,12 @@
             </form>
           {% endif %}
       </nav>
-      {% if alert_message == 'Login succesful' or alert_message == 'Logout succesful' or alert_message == 'Registration succesful' or alert_message == 'Review posted succesfully' %}
+      {% if alert_message == 'Review posted succesfully' or alert_message == 'Registration succesful' %}
       <div class="alert alert-success" role="alert">
         {{ alert_message }}
       </div>
       {% endif %}
-      {% if alert_message == 'Login failed' or alert_message == 'Email address is already present in the database. Log in or register a different email address.' or alert_message == 'Passwords need to be the same to register.' or alert_message == 'Please log in or register to search this website.' or alert_message == 'Please log in or register to view books and reviews.' %}
+      {% if alert_message == 'Email address is already present in the database. Log in or register a different email address.' or alert_message == 'Passwords need to be the same to register.' or alert_message == 'Please log in or register to search this website.' or alert_message == 'Please log in or register to view books and reviews.' or alert_message == 'You are unable to post multiple reviews for a single book.' %}
         <div class="alert alert-danger" role="alert">
           {{ alert_message }}
         </div>
@@ -45,13 +45,13 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-12 control-label">Email</label>
                   <div class="col-sm-12">
-                    <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email">
+                    <input type="email" class="form-control" id="inputEmail1" name="email" placeholder="Email">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-12 control-label">Password</label>
                   <div class="col-sm-12">
-                    <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="inputPassword1" name="password" placeholder="Password">
                   </div>
                 </div>
                 <div class="form-group">

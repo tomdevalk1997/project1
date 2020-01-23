@@ -6,9 +6,11 @@
   <li class="nav-item active">
     <a class="nav-link" href="{{ url_for('books') }}">Books</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-  </li>
+  {% if logged_in == False %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+    </li>
+  {% endif %}
 {% endblock %}
 {% block heading %}
   {{ book.title }}
@@ -50,37 +52,38 @@
     <h5>Write a review for: {{ book.title }}</h5>
     <form class="form-horizontal" action="{{ url_for('book', book_id=book.id) }}" method="post">
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-12 control-label">Title</label>
+        <label for="inputReviewTitle1" class="col-sm-12 control-label">Title</label>
         <div class="col-sm-12">
-          <input type="title" class="form-control" id="inputEmail3" name="review_title" placeholder="Review Title">
+          <input type="title" class="form-control" id="inputReviewTitle1" name="review_title" placeholder="Review Title">
         </div>
       </div>
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-12 control-label">Review</label>
+        <label for="inputReview1" class="col-sm-12 control-label">Review</label>
         <div class="col-sm-12">
-          <input type="review" class="form-control" id="inputEmail3" name="review" placeholder="Review">
+          <input type="review" class="form-control" id="inputReview1" name="review" placeholder="Review">
         </div>
       </div>
-      <div class="form-group" style="margin: 20px">
-        <label for="inputEmail3" class="col-sm-12 control-label">Rating</label>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value=1>
+
+      <div class="form-group">
+        <label for="inputRating1" class="col-sm-12 control-label">Rating</label>
+        <div class="form-check form-check-inline" style="margin-left: 20px">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ratingRadio1" value=1>
           <label class="form-check-label" for="inlineRadio1">1</label>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value=2>
+        <div class="form-check form-check-inline" style="margin-left: 20px">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ratingRadio2" value=2>
           <label class="form-check-label" for="inlineRadio2">2</label>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value=3>
+        <div class="form-check form-check-inline" style="margin-left: 20px">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ratingRadio3" value=3>
           <label class="form-check-label" for="inlineRadio3">3</label>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value=4>
+        <div class="form-check form-check-inline" style="margin-left: 20px">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ratingRadio4" value=4>
           <label class="form-check-label" for="inlineRadio4">4</label>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value=5>
+        <div class="form-check form-check-inline" style="margin-left: 20px">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ratingRadio5" value=5>
           <label class="form-check-label" for="inlineRadio5">5</label>
         </div>
       </div>

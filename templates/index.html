@@ -27,8 +27,8 @@
 {% block side_body %}
   <h5>Top 10 Rated Books</h5>
   <ol>
-    {% for i in range(10) %}
-      <li><a href="{{ url_for('books') }}" class="side-column-list">Book {{ i + 1 }}</a></li>
+    {% for book in top10 %}
+      <li><a href="{{ url_for('book', book_id=book.id) }}" class="side-column-list">{{ book.title }}</a></li>
     {% endfor %}
   </ol>
 {% endblock %}

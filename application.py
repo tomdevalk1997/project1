@@ -9,6 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import request
 import requests
 import json
+import datetime
 
 app = Flask(__name__)
 
@@ -19,22 +20,28 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+def update_list():
+    books = db.execute("SELECT * FROM books ORDER BY average_rating DESC LIMIT 10").fetchall()
+    return books
+
 @app.route("/")
 def index():
+    top10 = update_list()
     if session.get("logged_in") is None:
         session["logged_in"] = False
-    return render_template("index.html", logged_in=session["logged_in"], alert_message="")
+    return render_template("index.html", logged_in=session["logged_in"], alert_message="", top10=top10)
 
 @app.route("/books", methods=["GET", "POST"])
 def books():
+    top10 = update_list()
     if request.method == "GET":
-        return render_template("books.html", results_count=0, logged_in=session["logged_in"])
+        return render_template("books.html", results_count=0, logged_in=session["logged_in"], top10=top10)
     else:
         search_results = db.execute("SELECT * FROM books WHERE title like '%input%' or author like '%input%' or isbn like '%input%'").fetchall()
         if search_results is None:
             print("No books found")
             return render_template("books.html", results_count=0, logged_in=session["logged_in"])
-        return render_template("books.html", search_results=search_results, results_count=1, logged_in=session["logged_in"])
+        return render_template("books.html", search_results=search_results, results_count=1, logged_in=session["logged_in"], top10=top10)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -62,66 +69,74 @@ def register():
 
 @app.route("/login", methods=["POST"])
 def login():
+    top10 = update_list()
     email = request.form.get("email")
     password = request.form.get("password")
-    query_user = db.execute("SELECT * FROM users WHERE email=:email and password=:password" , {"email": email, "password": password})
-    if query_user.rowcount == 1:
+    login_user = db.execute("SELECT * FROM users WHERE email=:email and password=:password" , {"email": email, "password": password}).fetchone()
+    if login_user is not None:
         alert_message = "Login succesful"
-        #session["user_id"] = query_user.user_id
+        session["user_id"] = login_user.id
+        print(session["user_id"])
         session["logged_in"] = True
     else:
         alert_message = "Login failed"
-    return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message)
+    return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message, top10=top10)
 
 @app.route("/logout") #werkt nog niet
 def logout():
+    top10 = update_list()
     alert_message = "Logout succesful"
     session["logged_in"] = False
-    return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message)
+    return render_template("index.html", logged_in=session["logged_in"], alert_message=alert_message, top10=top10)
 
 @app.route("/search", methods=["POST"])
 def search():
     search_input = request.form.get("search_input")
-    print(f"Searching for: {search_input}")
     if search_input is not None:
+        top10 = update_list()
         search_results = db.execute("SELECT * FROM books WHERE UPPER(title) like :title or UPPER(author) like :author or UPPER(isbn) like :isbn", {"title": f"%{search_input.upper()}%", "author": f"%{search_input.upper()}%", "isbn": f"%{search_input.upper()}%"}).fetchall()
         results_count = len(search_results)
         if search_results == []:
             results_message = f"No books found for: {search_input}"
         else:
             results_message = f"Showing {results_count} search results for: {search_input}"
-        return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=session["logged_in"], results_message=results_message)
+        return render_template("books.html", search_results=search_results, results_count=results_count, logged_in=session["logged_in"], results_message=results_message, top10=top10)
 
 @app.route("/books/<int:book_id>", methods=["GET", "POST"])
 def book(book_id):
+    alert_message = ""
+    top10 = update_list()
     if request.method == "POST":
         review_title = request.form.get("review_title")
         review = request.form.get("review")
-        print(review_title)
-        print(review)
-        date = date.today()
-        db.execute("INSERT INTO reviews(book_id, title, message, year) VALUES(:book_id, :title, :message, :date, :user_id)",
-        {"book_id": book_id, "title": review_title, "message": review, "date": date, "user_id": user_id})
+        date_review = datetime.date.today()
+        db.execute("INSERT INTO reviews(book_id, title, message, date, user_id) VALUES(:book_id, :title, :message, :date, :user_id)",
+        {"book_id": book_id, "title": review_title, "message": review, "date": date_review, "user_id": session["user_id"]})
         db.commit()
-    else:
-        book = db.execute("SELECT * FROM books WHERE id = :book_id", {"book_id": book_id}).fetchone()
-        if book is None:
-            return render_template("books.html", logged_in=session["logged_in"])
+        alert_message = "Review posted succesfully"
 
-        response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "L4JJxvbz5DQuqwHGe9grw", "isbns": book.isbn})
+    book = db.execute("SELECT * FROM books WHERE id = :book_id", {"book_id": book_id}).fetchone()
+    if book is None:
+        return render_template("books.html", logged_in=session["logged_in"], )
+
+    response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "L4JJxvbz5DQuqwHGe9grw", "isbns": book.isbn})
+    try:
         response_data = response.json()
         reviews_count = response_data["books"][0]["reviews_count"]
         average_rating = response_data["books"][0]["average_rating"]
-        #db.execute("UDATE books(SET average_rating=:average_rating, reviews_count=:reviews_count WHERE id=:book_id), {"book_id": book_id, "average_rating": average_rating, "reviews_count": reviews_count}")
-        #db.commit()
-        reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": book.id}).fetchall()
-        return render_template("book.html", book=book, reviews_count=reviews_count, average_rating=average_rating, reviews=reviews, logged_in=session["logged_in"])
+    except json.decoder.JSONDecodeError:
+        reviews_count = 0
+        average_rating = 0
+    db.execute("UPDATE books SET average_rating=:average_rating, reviews_count=:reviews_count WHERE id=:book_id", {"average_rating": average_rating, "reviews_count": reviews_count, "book_id": book.id})
+    db.commit()
+    reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": book.id}).fetchall()
+    return render_template("book.html", book=book, reviews_count=reviews_count, average_rating=average_rating, reviews=reviews, logged_in=session["logged_in"], alert_message=alert_message, top10=top10)
 
-@app.route("/api/books/<int:book_id>")
+@app.route("/api/books/<int:isbn>")
 def book_api(book_id):
-    book = db.execute("SELECT * FROM books WHERE id = :book_id").fetchone()
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
     if book is None:
-        return jsonify({"error": "unknown book_id"}), 404
+        return jsonify({"error": "unknown isbn"}), 404
     return jsonify({
         "isbn": book.isbn,
         "title": book.title,

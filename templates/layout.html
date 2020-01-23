@@ -27,7 +27,7 @@
         {{ alert_message }}
       </div>
       {% endif %}
-      {% if alert_message == 'Login failed' or alert_message == 'Email address is already present in the database. Log in or register a different email address.' or alert_message == 'Passwords need to be the same to register.' %}
+      {% if alert_message == 'Login failed' or alert_message == 'Email address is already present in the database. Log in or register a different email address.' or alert_message == 'Passwords need to be the same to register.' or alert_message == 'Please log in or register to search this website.' or alert_message == 'Please log in or register to view books and reviews.' %}
         <div class="alert alert-danger" role="alert">
           {{ alert_message }}
         </div>

@@ -9,6 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import request
 import requests
 import json
+from flask import jsonify
 import datetime
 
 app = Flask(__name__)
@@ -147,8 +148,8 @@ def book(book_id):
         alert_message = "Please log in or register to view books and reviews."
         return render_template("books.html", logged_in=session["logged_in"], results_count=0, alert_message=alert_message, top10=top10)
 
-@app.route("/api/books/<int:isbn>")
-def book_api(book_id):
+@app.route("/api/books/<string:isbn>")
+def book_api(isbn):
     # API requests are returned a JSON file with the ISBN, title, author and year of the requested book
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
     if book is None:
